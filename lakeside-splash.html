@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakeside Senior Living - Richmond, VA</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            height: 100vh;
+            width: 100vw;
+        }
+        .item {
+            border: 1px solid #ccc;
+            overflow: hidden;
+        }
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .weather, .news {
+            height: 100%;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .news {
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Left: Welcome Image -->
+        <div class="item">
+            <img src="welcome.jpg" alt="Welcome to Lakeside Senior Living">
+        </div>
+        <!-- Top Right: Event Image -->
+        <div class="item">
+            <img src="yoga_event.jpg" alt="Yoga Event at Lakeside">
+        </div>
+        <!-- Bottom Left: Weather Feed for Richmond, VA -->
+        <div class="item weather">
+            <iframe src="https://weatherwidget.io/w/?location=Richmond,%20VA&units=imperial&theme=light"></iframe>
+        </div>
+        <!-- Bottom Right: News Updates for Richmond, VA -->
+        <div class="item news">
+            <iframe src="https://rss.app/embed/v1/ticker/7f8e9d2c-8e7f-4b1d-8f9e-2c8e7f4b1d8f"></iframe>
+        </div>
+    </div>
+    <script src="https://weatherwidget.io/js/widget.min.js"></script>
+</body>
+</html>
