@@ -22,6 +22,7 @@
         .item {
             border: 1px solid #ccc;
             overflow: hidden;
+            position: relative;
         }
         .item img {
             width: 100%;
@@ -39,25 +40,35 @@
         .news {
             overflow-y: auto;
         }
+        .error {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: red;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Top Left: Welcome Image -->
         <div class="item">
-            <img src="welcome.jpg" alt="Welcome to Lakeside Senior Living">
+            <img src="https://raw.githubusercontent.com/pointclickdigital/lakeside-splash/main/welcome.jpg" alt="Welcome to Lakeside Senior Living" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="error" style="display:none;">Image Failed to Load</div>
         </div>
         <!-- Top Right: Event Image -->
         <div class="item">
-            <img src="yoga_event.png" alt="Yoga Event at Lakeside">
+            <img src="https://raw.githubusercontent.com/pointclickdigital/lakeside-splash/main/yoga_event.jpg" alt="Yoga Event at Lakeside" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="error" style="display:none;">Image Failed to Load</div>
         </div>
         <!-- Bottom Left: Weather Feed for Richmond, VA -->
         <div class="item weather">
-            <iframe src="https://weatherwidget.io/w/?location=Richmond,%20VA&units=imperial&theme=light"></iframe>
+            <iframe src="https://weatherwidget.io/w/a1b2c3d4-e5f6-7890-abcd-ef1234567890" sandbox="allow-scripts allow-same-origin"></iframe>
         </div>
         <!-- Bottom Right: News Updates for Richmond, VA -->
         <div class="item news">
-            <iframe src="https://rss.app/embed/v1/ticker/7f8e9d2c-8e7f-4b1d-8f9e-2c8e7f4b1d8f"></iframe>
+            <iframe src="https://rss.app/embed/v1/ticker/5e6f7g8h-9i0j-klmn-opqr-stuv12345678" sandbox="allow-scripts allow-same-origin"></iframe>
         </div>
     </div>
     <script src="https://weatherwidget.io/js/widget.min.js"></script>
