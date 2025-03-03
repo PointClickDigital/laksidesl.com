@@ -5,35 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lakeside Senior Living - Richmond, VA</title>
     <style>
-        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f0f0f0; overflow: hidden; }
-        .container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; height: 100vh; width: 100vw; }
-        .item { border: 1px solid #ccc; overflow: hidden; position: relative; }
-        .item img { width: 100%; height: 100%; object-fit: cover; }
-        .weather, .news { height: 100%; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .news { overflow-y: auto; }
-        .error { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: red; font-size: 18px; }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            height: 100vh;
+            width: 100vw;
+        }
+        .item {
+            border: 1px solid #ccc;
+            overflow: hidden;
+            position: relative;
+        }
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .weather, .news {
+            height: 100%;
+        }
+        .weatherwidget-io {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .news {
+            overflow-y: auto;
+        }
+        .error {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: red;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Top Left: Welcome Image -->
         <div class="item">
-            <img src="welcome.jpg" alt="Welcome to Lakeside Senior Living" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <img src="https://raw.githubusercontent.com/pointclickdigital/lakeside-splash/main/welcome.jpg" alt="Welcome to Lakeside Senior Living" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <div class="error" style="display:none;">Image Failed to Load</div>
         </div>
+        <!-- Top Right: Event Image -->
         <div class="item">
             <img src="https://raw.githubusercontent.com/pointclickdigital/lakeside-splash/main/yoga_event.jpg" alt="Yoga Event at Lakeside" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <div class="error" style="display:none;">Image Failed to Load</div>
         </div>
+        <!-- Bottom Left: Weather Feed for Richmond, VA -->
         <div class="item weather">
-            <iframe src="https://weatherwidget.io/w/7k8m9n0p-1q2r-3s4t-uvwx-yz1234567890" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="weatherwidget-io" href="https://forecast7.com/en/37d54n77d43/richmond/" data-label_1="RICHMOND" data-label_2="WEATHER" data-theme="light">RICHMOND WEATHER</a>
         </div>
+        <!-- Bottom Right: News Updates for Richmond, VA -->
         <div class="item news">
-            <iframe src="https://rss.app/embed/v1/ticker/5e6f7g8h-9i0j-klmn-opqr-stuv12345678" sandbox="allow-scripts allow-same-origin"></iframe>
+            <iframe src="https://rss.app/embed/v1/ticker/9k1m2n3p-4q5r-6s7t-uvwx-yz8901234567" sandbox="allow-scripts allow-same-origin"></iframe>
         </div>
     </div>
-    <script src="https://weatherwidget.io/js/widget.min.js"></script>
+    <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+    </script>
 </body>
 </html>
-
 
