@@ -34,18 +34,20 @@
             padding: 10px;
             overflow: hidden;
         }
-        .rss-feed {
+        .carousel {
             width: 100%;
             height: 100%;
-            overflow-y: auto;
+            overflow: hidden;
+            position: relative;
+        }
+        .carousel-content {
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-item {
             padding: 10px;
-        }
-        .rss-feed ul {
-            list-style: none;
-            padding: 0;
-        }
-        .rss-feed li {
-            margin-bottom: 10px;
+            text-align: center;
         }
         .ticker {
             position: fixed;
@@ -68,9 +70,9 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" style="grid-template-rows: 1fr 1fr 1fr;">
         <div class="box">
-            <a class="weatherwidget-io" href="https://forecast7.com/en/37d77n122d42/san-francisco/" data-label_1="SAN FRANCISCO" data-theme="dark">San Francisco</a>
+            <a class="weatherwidget-io" href="https://forecast7.com/en/37d62n77d49/richmond/" data-label_1="RICHMOND, VA" data-theme="dark">Richmond, VA</a>
             <script>
                 !function(d,s,id){
                     var js,fjs=d.getElementsByTagName(s)[0];
@@ -80,8 +82,8 @@
                 }(document,'script','weatherwidget-io-js');
             </script>
         </div>
-        <div class="box rss-feed" id="newsFeed">
-            <ul id="newsList"></ul>
+        <div class="box carousel" id="newsCarousel">
+            <div class="carousel-content" id="carouselContent"></div>
         </div>
         <div class="box">
             <img src="your-image1.jpg" alt="Static Image 1" style="width: 100%; height: 100%; object-fit: cover;">
@@ -95,27 +97,51 @@
     </div>
     
     <script>
-        async function fetchRSS() {
-            const response = await fetch('https://rss.app/feeds/YOUR-RSS-FEED-ID.json');
+        async function fetchLocalNews() {
+            const response = await fetch('https://rss.app/feeds/YOUR-RICHMOND-RSS-FEED-ID.json');
             const data = await response.json();
-            const newsList = document.getElementById("newsList");
+            const carouselContent = document.getElementById("carouselContent");
+            
+            carouselContent.innerHTML = "";
+            
+            data.items.slice(0, 5).forEach(item => {
+                let div = document.createElement("div");
+                div.className = "carousel-item";
+                div.innerHTML = `<a href="${item.link}" target="_blank" style="color: white;">${item.title}</a>`;
+                carouselContent.appendChild(div);
+            });
+            startCarousel();
+        }
+        
+        async function fetchNationalNews() {
+            const response = await fetch('https://rss.app/feeds/YOUR-NATIONAL-RSS-FEED-ID.json');
+            const data = await response.json();
             const tickerContent = document.getElementById("tickerContent");
             
             let tickerText = "";
-            newsList.innerHTML = "";
-            
             data.items.slice(0, 5).forEach(item => {
-                let li = document.createElement("li");
-                li.innerHTML = `<a href="${item.link}" target="_blank" style="color: white;">${item.title}</a>`;
-                newsList.appendChild(li);
                 tickerText += ` | ${item.title} `;
             });
             
             tickerContent.textContent = tickerText;
         }
+
+        function startCarousel() {
+            let index = 0;
+            const items = document.querySelectorAll(".carousel-item");
+            function showNextItem() {
+                if (items.length > 0) {
+                    document.getElementById("carouselContent").style.transform = `translateY(-${index * 100}%)`;
+                    index = (index + 1) % items.length;
+                }
+            }
+            setInterval(showNextItem, 3000);
+        }
         
-        fetchRSS();
-        setInterval(fetchRSS, 60000);
+        fetchLocalNews();
+        fetchNationalNews();
+        setInterval(fetchLocalNews, 60000);
+        setInterval(fetchNationalNews, 60000);
     </script>
 </body>
 </html>
