@@ -66,4 +66,39 @@
             <div class="error" style="display:none;">Image Failed to Load</div>
         </div>
         <!-- Bottom Left: Weather Feed for Richmond, VA -->
-        <div class="item weather”
+        <div class="item weather" id="weather">
+            Loading weather...
+        </div>
+        <!-- Bottom Right: News Updates for Richmond, VA (RSS.app Ticker Widget) -->
+        <div class="item news" id="news-ticker">
+            <!-- RSS.app JavaScript Ticker Widget will render here -->
+        </div>
+    </div>
+
+    <!-- Weather API (OpenWeatherMap) -->
+    <script>
+        const weatherApiKey = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your API key
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=Richmond,VA,US&units=imperial&appid=${weatherApiKey}`;
+
+        fetch(weatherUrl)
+            .then(response => response.json())
+            .then(data => {
+                const weatherDiv = document.getElementById('weather');
+                const temp = data.main.temp;
+                const description = data.weather[0].description;
+                weatherDiv.innerHTML = `
+                    <h3>Richmond Weather</h3>
+                    <p>Temperature: ${temp}°F</p>
+                    <p>Conditions: ${description.charAt(0).toUpperCase() + description.slice(1)}</p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('weather').innerHTML = 'Failed to load weather data';
+                console.error('Weather Error:', error);
+            });
+    </script>
+
+    <!-- RSS.app JavaScript Ticker Widget -->
+    <script src="https://widget.rss.app/v1/ticker.js" type="text/javascript" async data-rssapp-widget-id="YOUR_WIDGET_ID" data-rssapp-type="ticker"></script>
+</body>
+</html>
