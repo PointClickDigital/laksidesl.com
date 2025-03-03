@@ -31,19 +31,25 @@
         }
         .weather, .news {
             height: 100%;
+            padding: 10px;
+            box-sizing: border-box;
         }
-        .weatherwidget-io {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        .weather {
+            font-size: 18px;
+            color: #333;
         }
         .news {
             overflow-y: auto;
+            font-size: 16px;
+            color: #333;
+        }
+        .news ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .news li {
+            margin-bottom: 10px;
         }
         .error {
             position: absolute;
@@ -59,7 +65,7 @@
     <div class="container">
         <!-- Top Left: Welcome Image -->
         <div class="item">
-            <img src="https://raw.githubusercontent.com/pointclickdigital/lakeside-splash/main/yoga_event.png" alt="Welcome to Lakeside Senior Living" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <img src="https://raw.githubusercontent.com/pointclickdigital/lakeside-splash/main/welcome.jpg" alt="Welcome to Lakeside Senior Living" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <div class="error" style="display:none;">Image Failed to Load</div>
         </div>
         <!-- Top Right: Event Image -->
@@ -68,17 +74,57 @@
             <div class="error" style="display:none;">Image Failed to Load</div>
         </div>
         <!-- Bottom Left: Weather Feed for Richmond, VA -->
-        <div class="item weather">
-            <a class="weatherwidget-io" href="https://forecast7.com/en/37d54n77d44/richmond/?unit=us" data-label_1="RICHMOND" data-label_2="WEATHER" data-font="Roboto Slab" data-icons="Climacons Animated" data-theme="weather_one" >RICHMOND WEATHER</a>
+        <div class="item weather" id="weather">
+            Loading weather...
         </div>
         <!-- Bottom Right: News Updates for Richmond, VA -->
-        <div class="item news">
-            <iframe src="https://rss.app/embed/v1/ticker/9k1m2n3p-4q5r-6s7t-uvwx-yz8901234567" sandbox="allow-scripts allow-same-origin"></iframe>
+        <div class="item news" id="news">
+            Loading news...
         </div>
     </div>
+
     <script>
-        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+        // Weather API (OpenWeatherMap)
+        const weatherApiKey = 'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your API key
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=Richmond,VA,US&units=imperial&appid=${weatherApiKey}`;
+
+        fetch(weatherUrl)
+            .then(response => response.json())
+            .then(data => {
+                const weatherDiv = document.getElementById('weather');
+                const temp = data.main.temp;
+                const description = data.weather[0].description;
+                weatherDiv.innerHTML = `
+                    <h3>Richmond Weather</h3>
+                    <p>Temperature: ${temp}°F</p>
+                    <p>Conditions: ${description.charAt(0).toUpperCase() + description.slice(1)}</p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('weather').innerHTML = 'Failed to load weather data';
+                console.error('Weather Error:', error);
+            });
+
+        // News RSS Feed (Richmond Times-Dispatch via RSS2JSON API)
+        const rssUrl = 'https://api.rss2json.com/v1/api.json?rss_url=https://richmond.com/search/?f=rss';
+        const apiKey = 'YOUR_RSS2JSON_API_KEY'; // Optional, replace if you sign up for RSS2JSON
+
+        fetch(rssUrl + (apiKey ? `&api_key=${apiKey}` : ''))
+            .then(response => response.json())
+            .then(data => {
+                const newsDiv = document.getElementById('news');
+                const items = data.items.slice(0, 5); // Limit to 5 latest headlines
+                let newsHtml = '<h3>Richmond News</h3><ul>';
+                items.forEach(item => {
+                    newsHtml += `<li>${item.title}</li>`;
+                });
+                newsHtml += '</ul>';
+                newsDiv.innerHTML = newsHtml;
+            })
+            .catch(error => {
+                document.getElementById('news').innerHTML = 'Failed to load news updates';
+                console.error('News Error:', error);
+            });
     </script>
 </body>
 </html>
-
