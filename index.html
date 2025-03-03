@@ -100,7 +100,7 @@
                 const data = await response.json();
                 
                 if (response.ok) {
-                    const weatherBox = document.getElementById("weather");
+                    const weatherBox = document.getElementById("weather-box").querySelector("p");
                     weatherBox.innerHTML = `
                         <strong>${data.name} Weather</strong><br>
                         ${data.weather[0].description}<br>
@@ -109,10 +109,10 @@
                         Wind: ${data.wind.speed} mph
                     `;
                 } else {
-                    document.getElementById("weather").textContent = "Weather data unavailable";
+                    document.getElementById("weather-box").querySelector("p").textContent = "Weather data unavailable";
                 }
             } catch (error) {
-                document.getElementById("weather").textContent = "Error loading weather";
+                document.getElementById("weather-box").querySelector("p").textContent = "Error loading weather";
             }
         }
         
