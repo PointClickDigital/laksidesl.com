@@ -49,6 +49,16 @@
             overflow: hidden;
             text-align: center;
         }
+        /* Specific styling for the first image box */
+        .box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Ensure background color for first image box */
+        .box:first-child {
+            background-color: white;
+        }
         /* Styling for the scrolling ticker */
         .ticker {
             position: fixed;
@@ -66,7 +76,7 @@
     <div class="container">
         <!-- Static Image 1 -->
         <div class="box">
-            <img src="your-image1.png" alt="Static Image 1" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="your-image1.png" alt="Static Image 1">
         </div>
         <!-- Weather Widget (Using NWS API) -->
         <div class="box" id="weather-box">
@@ -79,7 +89,7 @@
         </div>
         <!-- Static Image 2 -->
         <div class="box">
-            <img src="your-image2.jpg" alt="Static Image 2" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="your-image2.jpg" alt="Static Image 2">
         </div>
     </div>
     <!-- Scrolling News Ticker from RSS.app -->
