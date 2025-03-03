@@ -68,12 +68,9 @@
         <div class="box">
             <img src="your-image1.png" alt="Static Image 1" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
-        <!-- Weather Widget -->
-        <div class="box">
-            <a class="weatherwidget-io" href="https://forecast7.com/en/37d54n77d44/richmond/" data-label_1="RICHMOND" data-label_2="WEATHER" data-theme="dark">RICHMOND WEATHER</a>
-            <script>
-                !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
-            </script>
+        <!-- Weather Widget (Using OpenWeatherMap API) -->
+        <div class="box" id="weather-box">
+            <p id="weather">Loading weather...</p>
         </div>
         <!-- News Carousel from RSS.app -->
         <div class="box">
@@ -90,5 +87,39 @@
         <rssapp-ticker id="tjjzkDRxuBlrZWbs"></rssapp-ticker>
         <script src="https://widget.rss.app/v1/ticker.js" type="text/javascript" async></script>
     </div>
+
+    <script>
+        // Fetch Weather Data from OpenWeatherMap API
+        async function fetchWeather() {
+            const apiKey = "f0ca5c8bea051ad7cf18ecb1c011b15b";
+            const city = "Richmond";
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city},us&units=imperial&appid=${apiKey}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    const weatherBox = document.getElementById("weather");
+                    weatherBox.innerHTML = `
+                        <strong>${data.name} Weather</strong><br>
+                        ${data.weather[0].description}<br>
+                        Temp: ${data.main.temp}°F<br>
+                        Humidity: ${data.main.humidity}%<br>
+                        Wind: ${data.wind.speed} mph
+                    `;
+                } else {
+                    document.getElementById("weather").textContent = "Weather data unavailable";
+                }
+            } catch (error) {
+                document.getElementById("weather").textContent = "Error loading weather";
+            }
+        }
+        
+        // Load weather on page load
+        fetchWeather();
+        // Update weather every 10 minutes
+        setInterval(fetchWeather, 600000);
+    </script>
 </body>
 </html>
